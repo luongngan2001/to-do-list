@@ -1,12 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
+import UserPage from './src/client/user/UserPage';
+import DiscoverPage from './src/client/discover/DiscoverPage';
+import Navigation from './src/client/Navigation';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#c7ceea" barStyle="light-content"/>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        <UserPage />
+        {/* <DiscoverPage /> */}
+        {/* <Navigation /> */}
+      </ScrollView>      
+    </SafeAreaView>
   );
 }
 
