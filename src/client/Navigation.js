@@ -39,7 +39,13 @@ const Navigation = () => {
             //     style: {padding: 10, height: 70}
             // }}
             >
-                <Tab.Screen name="Tôi" component={UserPage} />
+                <Tab.Screen 
+                    name="Tôi" 
+                    component={UserPage} options={{
+                    tabBarIcon: () => {
+                        <Ionicons name='user' size='26' color='red' />
+                    }
+                }} />
                 <Tab.Screen name="Khám phá" component={DiscoverPage} />
             </Tab.Navigator>
         </NavigationContainer>

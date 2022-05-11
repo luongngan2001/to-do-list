@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEye, faStar } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+// import { faEye, faStar } from '@fortawesome/free-solid-svg-icons';
 
 const imageRamdom = [
     require('../../../../image/1.jpeg'),
@@ -27,7 +27,7 @@ const imageRamdom = [
 ]
 
 const ToDo = (props) => {
-    const { title, view, rate, image } = props;
+    const { title, view, vote, image } = props;
     const handleNumberView = (number) => {
         if (number < 1000) {
             return number;
@@ -47,8 +47,8 @@ const ToDo = (props) => {
             </View>
             <View style={styles.view}>
                 <View style={{ flexDirection: 'row' }}>
-                    <FontAwesomeIcon icon={faStar} style={{ color: '#ffce3d' }} />
-                    <Text style={{marginLeft: 3}}>{rate}</Text>
+                    {/* <FontAwesomeIcon icon={faStar} style={{ color: '#ffce3d' }} /> */}
+                    <Text style={{marginLeft: 3}}>{vote}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={{color: 'gray'}}>{handleNumberView(view)}</Text>

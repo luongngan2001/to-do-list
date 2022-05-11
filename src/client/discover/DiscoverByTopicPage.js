@@ -1,49 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Platform, View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
 // import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-// import { faSearch, faPlateWheat, faBriefcaseMedical, faBriefcase, faLocationDot, faComputer, faShirt, faPersonRunning, faSeedling } from '@fortawesome/free-solid-svg-icons';
-import Topic from './component/Topic';
+// import { faSearch, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { post } from '../user/UserPage';
 import ToDo from '../user/component/ToDo';
+import { IconButton } from 'react-native-paper';
 import axios from 'axios';
-import { NavigationContainer, useIsFocused } from '@react-navigation/native';
 
-const topic = [
-    {
-        icon: faPlateWheat,
-        title: 'Món ăn'
-    },
-    {
-        icon: faBriefcaseMedical,
-        title: 'Y tế'
-    },
-    {
-        icon: faBriefcase,
-        title: 'Công việc'
-    },
-    {
-        icon: faLocationDot,
-        title: 'Du lịch'
-    },
-    {
-        icon: faComputer,
-        title: 'Máy tính'
-    },
-    {
-        icon: faSeedling,
-        title: 'Cây trồng'
-    },
-    {
-        icon: faShirt,
-        title: 'Thời trang'
-    },
-    {
-        icon: faPersonRunning,
-        title: 'Thể thao'
-    }
-]
-
-const DiscoverPage = () => {
+const DiscoverByTopicPage = () => {
     const postSorted = post.sort(
         function (a, b) {
             if (a.view === b.view) {
@@ -55,28 +19,22 @@ const DiscoverPage = () => {
     const [postFilterByTopic, setPostFilterByTopic] = useState(postSorted);
 
 
-
+    
     const handleFilterByTopic = (title) => {
         setPostFilterByTopic(postSorted.filter((item) => item.type.includes(title)));
-        // setKeySearch(title);
     }
-
-    // const isFocused = useIsFocused();
-
-    // useEffect(() => {
-    //     // Put Your Code Here Which You Want To Refresh or Reload on Coming Back to This Screen.
-    // }, [isFocused]);
-
-    // const navigateToNextScreen = () => {
-
-    //     navigation.navigate('Second');
-
-    // }
 
     return (
         <View style={styles.container}>
-            {/* <Button onPress={navigateToNextScreen} title="Navigate To Next Screen" /> */}
             <View style={styles.header}>
+                {/* <View style={styles.back}>
+                    <IconButton
+                        style={styles.iconBack}
+                        icon={() => (
+                            <FontAwesomeIcon icon={faArrowLeft} />
+                        )}
+                    />
+                </View>
                 <View style={styles.search}>
                     <View style={styles.iconSearch}>
                         <FontAwesomeIcon icon={faSearch} />
@@ -87,18 +45,7 @@ const DiscoverPage = () => {
                         style={styles.input}
                         placeholder='Tìm kiếm'
                     />
-                </View>
-                {/* <View style={styles.key}>
-                    <Text numberOfLines={1}>abdf, sdvd, vdfv, dfvbd, dfvd, dfvdf, sdsdf, grfgd, zdbjsd, sdjks</Text>
                 </View> */}
-                {/* <View style={styles.listTopic}>
-                    {topic.map((item, index) => {
-                        return (
-                            <Topic icon={item.icon} title={item.title} key={index} onPress={() => handleFilterByTopic(item.title)} />
-                        )
-                    })}
-                </View> */}
-
             </View>
 
 
@@ -117,7 +64,7 @@ const DiscoverPage = () => {
     )
 }
 
-export default DiscoverPage;
+export default DiscoverByTopicPage;
 
 const styles = StyleSheet.create({
     container: {
@@ -125,7 +72,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     header: {
-        backgroundColor: '#c7ceea',
+        flexDirection: 'row',
+        alignItems:'center'
+    },
+    back: {
+        padding: 0,
+        margin: 0
     },
     search: {
         flexDirection: 'row',
@@ -135,19 +87,15 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 20,
         backgroundColor: 'white',
-        margin: 10
+        margin: 10,
+        marginLeft: 0
     },
     iconSearch: {
         padding: 10
     },
     input: {
-        width: 300,
+        width: 280,
         height: 40,
-    },
-    key: {
-        alignItems: 'center',
-        marginLeft: 20,
-        marginRight: 20
     },
     listTopic: {
         flexDirection: 'row',
@@ -158,16 +106,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        ...Platform.select({
-            ios: {
-                marginRight: 10,
-                marginLeft: 10
-            },
-            android: {
-                marginRight: 20,
-                marginLeft: 20
-            }
-        }),
-
+        marginRight: 10,
+        marginLeft: 10
     },
 });

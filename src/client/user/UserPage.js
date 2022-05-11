@@ -2,52 +2,145 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import ToDo from './component/ToDo';
 import * as ImagePicker from 'expo-image-picker';
-import { IconButton, Colors } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 
-const user = {
+export const user = {
   id: '1',
   name: 'Luong Thi Ngan',
   avatar: 'https://thuthuatnhanh.com/wp-content/uploads/2021/02/Anh-avatar-bua-cute-dep-390x390.jpg',
   description: 'blalalala blalalala blalalala blalalala blalalala blalalala blalalala blalalala blalalala blalalala blalalala',
   dateCreated: '1/1/2022',
   view: '123456',
-  post: '10',
-  rate: '4.5'
+  vote: '4.5'
 }
-
-export const todo = [
+export const post = [
   {
-    title: 'Title dfjbvj dfvbd dvfjnvdk dvfjdkjv dfj dfbd dfvdf dfgbfdb',
+    title: "Canh bau tom",
+    type: ["Món ăn", "Y tế"],
+    execution_time: 20,
+    image: "https://i.pinimg.com/474x/6a/8a/93/6a8a93567a289f00b8ed65fd1cfe3bff.jpg",
+    description: "Canh bầu tôm tươi là món canh thanh đạm...",
+    vote: 4.5,
     view: '123',
-    rate: '2.5',
-    image: null
+    author: {
+      image: "link2",
+      name: "TV. Phương"
+    },
+    step: [
+      {
+        title: "Chuẩn bị nguyên liệu",
+        description: "Chuản bị nguyên liệu nấu canh",
+        time: "",
+        child: [
+          {
+            title: "1 trái bầu",
+            description: " Trái bầu còn non,...",
+            time: ""
+          },
+          {
+            title: "100g tôm",
+            description: "Ưu tiên chọn...",
+            time: ""
+          },
+          {
+            title: "Hành ngò",
+            description: "",
+            time: ""
+          },
+        ]
+      },
+      {
+        title: "Bầu bỏ cuống, gọt sạch, rửa, cắt thành miếng nhỏ",
+        description: "",
+        child: []
+      }
+    ]
   },
   {
-    title: 'Title',
-    view: '123456',
-    rate: '2.5',
-    image: 'https://i.pinimg.com/474x/6a/8a/93/6a8a93567a289f00b8ed65fd1cfe3bff.jpg'
+    title: "Canh bau ca 1",
+    type: ["Món ăn"],
+    execution_time: 20,
+    image: null,
+    description: "Canh bầu tôm tươi là món canh thanh đạm...",
+    vote: 3.0,
+    view: '123212',
+    author: {
+      image: "link2",
+      name: "TV. Phương"
+    },
+    step: [
+      {
+        title: "Chuẩn bị nguyên liệu",
+        description: "Chuản bị nguyên liệu nấu canh",
+        time: "",
+        child: [
+          {
+            title: "1 trái bầu",
+            description: " Trái bầu còn non,...",
+            time: ""
+          },
+          {
+            title: "100g tôm",
+            description: "Ưu tiên chọn...",
+            time: ""
+          },
+          {
+            title: "Hành ngò",
+            description: "",
+            time: ""
+          },
+        ]
+      },
+      {
+        title: "Bầu bỏ cuống, gọt sạch, rửa, cắt thành miếng nhỏ",
+        description: "",
+        child: []
+      }
+    ]
   },
   {
-    title: 'Title',
-    view: '123456789',
-    rate: '2.5',
-    image: null
-  },
-  {
-    title: 'Title',
-    view: '123456789',
-    rate: '2.5',
-    image: null
-  },
-  {
-    title: 'Title',
-    view: '123456789',
-    rate: '2.5',
-    image: null
+    title: "Đi chơi",
+    type: ["Du lịch"],
+    execution_time: 20,
+    image: null,
+    description: "Canh bầu tôm tươi là món canh thanh đạm...",
+    vote: 2.5,
+    view: '12321',
+    author: {
+      image: "link2",
+      name: "TV. Phương"
+    },
+    step: [
+      {
+        title: "Chuẩn bị nguyên liệu",
+        description: "Chuản bị nguyên liệu nấu canh",
+        time: "",
+        child: [
+          {
+            title: "1 trái bầu",
+            description: " Trái bầu còn non,...",
+            time: ""
+          },
+          {
+            title: "100g tôm",
+            description: "Ưu tiên chọn...",
+            time: ""
+          },
+          {
+            title: "Hành ngò",
+            description: "",
+            time: ""
+          },
+        ]
+      },
+      {
+        title: "Bầu bỏ cuống, gọt sạch, rửa, cắt thành miếng nhỏ",
+        description: "",
+        child: []
+      }
+    ]
   },
 ]
 
@@ -98,20 +191,20 @@ const UserPage = () => {
             <Text style={styles.text}>Lượt xem</Text>
           </View>
           <View style={styles.column}>
-            <Text style={styles.number}>{user.rate}</Text>
+            <Text style={styles.number}>{user.vote}</Text>
             <Text style={styles.text}>Đánh giá</Text>
           </View>
           <View style={[styles.column, { marginRight: 0 }]}>
-            <Text style={styles.number}>{user.post}</Text>
+            <Text style={styles.number}>{post.length}</Text>
             <Text style={styles.text}>Số bài</Text>
           </View>
         </View>
       </View>
       <View style={styles.list}>
-        {todo.map((item, index) => {
+        {post.map((item, index) => {
           return (
             <View style={styles.item} key={index}>
-              <ToDo title={item.title} view={item.view} rate={item.rate} image={item.image} />
+              <ToDo title={item.title} view={item.view} vote={item.vote} image={item.image} />
             </View>
           );
         })}
@@ -146,7 +239,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     bottom: 0,
-
   },
   name: {
     fontSize: 18,
@@ -173,8 +265,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginRight: 10,
-    marginLeft: 10
+    ...Platform.select({
+      ios: {
+        marginRight: 10,
+        marginLeft: 10
+      },
+      android: {
+        marginRight: 20,
+        marginLeft: 20
+      }
+    }),
   },
 
 });
