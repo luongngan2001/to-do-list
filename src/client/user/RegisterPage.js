@@ -1,33 +1,37 @@
-import React, { useCallback, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TextInput, Dimensions, TouchableOpacity, Alert, Modal} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Image, TextInput, Dimensions, TouchableOpacity, Alert, Modal } from 'react-native';
 import axios from 'axios';
-import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import PasswordInput from './component/PasswordInput';
+import { useNavigation } from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
-const LoginPage = () => {
+const RegisterPage = () => {
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
 
     const navigation = useNavigation();
 
-    const handleSunmit = useCallback(() => {
-        axios.post('http://127.0.0.1:3000/', {email, password})
+    const handleSunmit = () => {
+        if (password !== repeatPassword) {
+            setModalVisible(true);
+            return;
+        }
+        axios.post('http://127.0.0.1:3000/register', {email, name, password})
         .then(response => {
-            console.log(response);
-            navigation.navigate('Discover');
             setEmail('');
+            setName('');
             setPassword('');
+            setRepeatPassword('');
+            console.log(response);
         })
         .catch(err => {
-            setModalVisible(true);
             console.log(err);
         })
-    }, [email. password]);
+    }
 
     return (
         <View style={styles.container}>
@@ -35,32 +39,23 @@ const LoginPage = () => {
                 <Image style={styles.logo} source={require('../../../image/logo.jpg')} />
             </View>
             <View>
-                <Text style={styles.header}>Đăng nhập</Text>
+                <Text style={styles.header}>Đăng ký</Text>
             </View>
             <View>
-                <View style={styles.inputView}>
-                    <TextInput autoComplete='email' require style={styles.input} placeholder='Email' value={email} onChangeText={setEmail} />
-                </View>
-                <PasswordInput password={password} setPassword={setPassword} placeholder='Mật khẩu' />   
+                <TextInput autoComplete='email' autoCapitalize="none" style={styles.input} placeholder='Email' value={email} onChangeText={setEmail} />
+                <TextInput style={styles.input} autoCapitalize="none" placeholder='Tên' value={name} onChangeText={setName} />
+                <PasswordInput password={password} setPassword={setPassword} placeholder='Mật khẩu' />
+                <PasswordInput password={repeatPassword} setPassword={setRepeatPassword} placeholder='Nhập lại mật khẩu' />
             </View>
             <TouchableOpacity style={styles.btn} onPress={handleSunmit}>
-                <Text style={styles.btnText}>ĐĂNG NHẬP</Text>
+                <Text style={styles.btnText}>ĐĂNG KÝ</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.link}>
-            <View style={styles.footer}>
-                <View>
-                    <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Register')}>
-                        <Text style={styles.linkText}>Đăng ký</Text>
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TouchableOpacity style={styles.link}>
-                        <Text style={styles.linkText}>Quên mật khẩu</Text>
-                    </TouchableOpacity>
-                </View>
-                
-            </View>
-            </TouchableOpacity>
+            <Text>Bạn đã có tài khoản?  
+                <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Login')} >
+                    <Text style={styles.linkText}> Đăng nhập</Text>
+                </TouchableOpacity>
+            </Text>
+
             <View style={styles.centeredView}>
                 <Modal
                 animationType="slide"
@@ -73,7 +68,7 @@ const LoginPage = () => {
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text style={styles.modalText}>Email hoặc mật khẩu của bạn không đúng</Text>
+                            <Text style={styles.modalText}>Mật khẩu không khớp</Text>
                             <View style={styles.button}>
                                 <TouchableOpacity
                                     style={styles.buttonModal}
@@ -90,7 +85,7 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage;
+export default RegisterPage;
 
 const styles = StyleSheet.create({
     container: {
@@ -112,10 +107,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: 20
     },
-    inputView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     input: {
         width: 350,
         height: 50,
@@ -124,10 +115,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         backgroundColor: 'white',
         marginBottom: 20
-    },
-    icon: {
-        position: 'absolute',
-        right: 10
     },
     btn: {
         width: 350,
@@ -140,11 +127,6 @@ const styles = StyleSheet.create({
     btnText: {
         color: 'white',
         fontSize: 16
-    },
-    footer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: 340
     },
     linkText: {
         marginTop: 10,

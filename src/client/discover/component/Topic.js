@@ -1,21 +1,20 @@
 import { View, StyleSheet, Text } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { icon } from '@fortawesome/fontawesome-svg-core';
-import { IconButton, Button } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const Topic = (props) => {
-    const { icon, title, onPress } = props;
+    const { icon, color, name, label, onPress } = props;
     return (
         <View style={styles.container}>
             <View style={styles.iconButton}>
                 <IconButton
                     onPress={onPress}
                     icon={() => (
-                        <FontAwesomeIcon icon={icon} style={styles.icon} />
+                        <MaterialIcons name={icon} size={35} color={color} />
                     )}
                 />
             </View>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{label}</Text>
         </View>
 
     );
@@ -38,11 +37,8 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         width: 50,
     },
-    icon: {
-        padding: 15,
-        margin: 7,
-    },
     title: {
         overflow: 'hidden',
+        color: 'white'
     }
 });

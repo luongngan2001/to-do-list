@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
-// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-// import { faEye, faStar } from '@fortawesome/free-solid-svg-icons';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import ReviewVote from '../../post/component/ReviewVote';
 
 const imageRamdom = [
     require('../../../../image/1.jpeg'),
@@ -27,7 +29,8 @@ const imageRamdom = [
 ]
 
 const ToDo = (props) => {
-    const { title, view, vote, image } = props;
+    const { title, view, download, image, list_id } = props;
+    const [vote, setVote] = useState(null);
     const handleNumberView = (number) => {
         if (number < 1000) {
             return number;
@@ -37,23 +40,41 @@ const ToDo = (props) => {
             return (number / 1000000).toFixed(1) + "Tr";
         }
     }
+
+    useEffect(() => {
+        axios.get(`http://127.0.0.1:3000/list/get_vote?list_id=${list_id}`)
+        .then(response => {
+            setVote(response.data.result.avg);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }, [])
+
     return (
         <View style={styles.container}>
             <View>
-                <Image source={image ? { uri: image } : imageRamdom[Math.floor(Math.random()*20)]} style={styles.image} />
+                {/* <Image source={image ? { uri: image } : imageRamdom[Math.floor(Math.random()*20)]} style={styles.image} /> */}
+                <Image source={image ? { uri: image } : require('../../../../image/8.jpeg')} style={styles.image} />
             </View>
             <View style={styles.title}>
                 <Text style={styles.titleText} numberOfLines={2}>{title}</Text>
             </View>
             <View style={styles.view}>
                 <View style={{ flexDirection: 'row' }}>
-                    {/* <FontAwesomeIcon icon={faStar} style={{ color: '#ffce3d' }} /> */}
-                    <Text style={{marginLeft: 3}}>{vote}</Text>
+                    <Feather name="download" size={16} color="#ee4d2d" />
+                    <Text style={{marginLeft: 3}}>{download}</Text>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{color: 'gray'}}>{handleNumberView(view)}</Text>
-                    <Text style={{color: 'gray', marginLeft: 3}}>lượt xem</Text>
+                <View style={{alignItems: 'flex-end'}}>
+                    {vote &&
+                        <ReviewVote vote={vote} />
+                    }
+                    <View style={{ flexDirection: 'row', marginTop: 5}}>
+                        <Text style={{color: 'gray', fontSize: 12}}>{handleNumberView(view)}</Text>
+                        <Text style={{color: 'gray', marginLeft: 3, fontSize: 12}}>lượt xem</Text>
+                    </View>
                 </View>
+                
 
             </View>
         </View>
@@ -89,7 +110,10 @@ const styles = StyleSheet.create({
     },
     view: {
         margin: 5,
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 35
     },
 
 });

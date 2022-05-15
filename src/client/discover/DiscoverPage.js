@@ -1,115 +1,138 @@
 import { useState, useEffect } from 'react';
-import { Platform, View, Text, StyleSheet, TextInput, Button } from 'react-native';
-// import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-// import { faSearch, faPlateWheat, faBriefcaseMedical, faBriefcase, faLocationDot, faComputer, faShirt, faPersonRunning, faSeedling } from '@fortawesome/free-solid-svg-icons';
+import { Platform, View, Text, StyleSheet, TouchableOpacity  } from 'react-native';
 import Topic from './component/Topic';
-import { post } from '../user/UserPage';
 import ToDo from '../user/component/ToDo';
 import axios from 'axios';
-import { NavigationContainer, useIsFocused } from '@react-navigation/native';
+import SearchInput from './component/SearchInput';
+import { useNavigation } from '@react-navigation/native';
 
 const topic = [
     {
-        icon: faPlateWheat,
-        title: 'Món ăn'
+        id: 1,
+        icon: 'food-bank',
+        color: '#8f60bf',
+        name: 'food',
+        label: 'Món ăn'
     },
     {
-        icon: faBriefcaseMedical,
-        title: 'Y tế'
+        id: 2,
+        icon: 'medical-services',
+        color: '#f291a3',
+        name: 'medical',
+        label: 'Y tế'
     },
     {
-        icon: faBriefcase,
-        title: 'Công việc'
+        id: 3,
+        icon: 'airplanemode-active',
+        color: '#079dd9',
+        name: 'travel',
+        label: 'Du lịch'
     },
     {
-        icon: faLocationDot,
-        title: 'Du lịch'
+        id: 4,
+        icon: 'computer',
+        color: 'gray',
+        name: 'computer',
+        label: 'Điện tư'
     },
     {
-        icon: faComputer,
-        title: 'Máy tính'
+        id: 5,
+        icon: 'nature',
+        color: '#56c596',
+        name: 'nature',
+        label: 'Nông nghiệp'
     },
     {
-        icon: faSeedling,
-        title: 'Cây trồng'
+        id: 6,
+        icon: 'style',
+        color: '#f56a79',
+        name: 'style',
+        label: 'Sắc đẹp'
     },
     {
-        icon: faShirt,
-        title: 'Thời trang'
+        id: 7,
+        icon: 'sports-football',
+        color: 'orange',
+        name: 'activity',
+        label: 'Thể thao'
     },
     {
-        icon: faPersonRunning,
-        title: 'Thể thao'
-    }
+        id: 8,
+        icon: 'work',
+        color: '#425d8a',
+        name: 'work',
+        label: 'Công việc'
+    },
 ]
 
 const DiscoverPage = () => {
-    const postSorted = post.sort(
-        function (a, b) {
-            if (a.view === b.view) {
-                return b.vote - a.vote;
-            }
-            return a.view < b.view ? 1 : -1;
-        });
     const [keySearch, setKeySearch] = useState('');
-    const [postFilterByTopic, setPostFilterByTopic] = useState(postSorted);
+    const [post, setPost] = useState(null);
 
+    const navigation = useNavigation();
+    // useEffect(() => {
+    //     // axios.get('http://127.0.0.1:3000/search/type')
+    //     // .then(response => {
+    //     //     setTopicList(response.data);
+    //     // })
+    //     // .catch(err => {
+    //     //     console.log(err);
+    //     // })
+    // }, []);
 
+    // const postSorted = post && post.sort(
+    //     function (a, b) {
+    //         if (a.view === b.view) {
+    //             return b.vote - a.vote;
+    //         }
+    //         return a.view < b.view ? 1 : -1;
+    //     });
 
-    const handleFilterByTopic = (title) => {
-        setPostFilterByTopic(postSorted.filter((item) => item.type.includes(title)));
-        // setKeySearch(title);
+    useEffect(() => {
+        axios.get(`http://127.0.0.1:3000/search/getall`)
+        .then(response => {
+            setPost(response.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }, [])
+
+    const handleSearch = () => {
+        axios.get(`http://127.0.0.1:3000/search?key=${keySearch}`)
+        .then(response => {
+            setPost(response.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
-    // const isFocused = useIsFocused();
-
-    // useEffect(() => {
-    //     // Put Your Code Here Which You Want To Refresh or Reload on Coming Back to This Screen.
-    // }, [isFocused]);
-
-    // const navigateToNextScreen = () => {
-
-    //     navigation.navigate('Second');
-
-    // }
+    useEffect(() => {
+        handleSearch(keySearch);
+    }, [keySearch])
 
     return (
         <View style={styles.container}>
-            {/* <Button onPress={navigateToNextScreen} title="Navigate To Next Screen" /> */}
             <View style={styles.header}>
-                <View style={styles.search}>
-                    <View style={styles.iconSearch}>
-                        <FontAwesomeIcon icon={faSearch} />
-                    </View>
-                    <TextInput
-                        value={keySearch}
-                        onChangeText={(e) => setKeySearch(e)}
-                        style={styles.input}
-                        placeholder='Tìm kiếm'
-                    />
-                </View>
-                {/* <View style={styles.key}>
-                    <Text numberOfLines={1}>abdf, sdvd, vdfv, dfvbd, dfvd, dfvdf, sdsdf, grfgd, zdbjsd, sdjks</Text>
-                </View> */}
-                {/* <View style={styles.listTopic}>
+                <SearchInput value={keySearch} setValue={setKeySearch} placeholder='Tìm kiếm' />
+                <View style={styles.listTopic}>
                     {topic.map((item, index) => {
                         return (
-                            <Topic icon={item.icon} title={item.title} key={index} onPress={() => handleFilterByTopic(item.title)} />
+                            <Topic icon={item.icon} color={item.color} name={item.name} label={item.label} key={index} onPress={() => navigation.navigate('DiscoverByTopic', {type_id: item.id, type_label: item.label})} />
                         )
                     })}
-                </View> */}
-
+                </View>
             </View>
 
 
             <View style={styles.list}>
-                {postFilterByTopic
-                    .filter((item) => item.title.toLowerCase().includes(keySearch.toLowerCase()))
+                {post && post
                     .map((item, index) => {
                         return (
-                            <View style={styles.item} key={index}>
-                                <ToDo title={item.title} view={item.view} vote={item.vote} image={item.image} />
-                            </View>
+                            <TouchableOpacity style={styles.item} key={index} onPress={() => navigation.navigate('DetailPost', {list_id: item.list_id})}>
+                                <ToDo title={item.name} view={item.view} download={item.download} list_id={item.list_id} />
+                            </TouchableOpacity>
                         );
                     })}
             </View>
@@ -123,31 +146,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
+        backgroundColor: 'white'
     },
     header: {
-        backgroundColor: '#c7ceea',
-    },
-    search: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 20,
-        backgroundColor: 'white',
-        margin: 10
-    },
-    iconSearch: {
-        padding: 10
-    },
-    input: {
-        width: 300,
-        height: 40,
-    },
-    key: {
-        alignItems: 'center',
-        marginLeft: 20,
-        marginRight: 20
+        backgroundColor: '#ee4d2d',
+        alignItems: 'center'
     },
     listTopic: {
         flexDirection: 'row',

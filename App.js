@@ -5,44 +5,61 @@ import UserPage from './src/client/user/UserPage';
 import DiscoverPage from './src/client/discover/DiscoverPage';
 import DiscoverByTopicPage from './src/client/discover/DiscoverByTopicPage';
 import LoginPage from './src/client/user/LoginPage';
-import Navigation from './src/client/Navigation';
-import { NavigationContainer, useIsFocused } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import GetNewPasswordPage from './src/client/user/GetNewPasswordPage';
+import RegisterPage from './src/client/user/RegisterPage';
+import DetailPostPage from './src/client/post/DetailPostPage';
+import ReviewPage from './src/client/post/ReviewPage';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <SafeAreaView style={[styles.container, GlobalStyles.AndroidSafeArea]}>
-      <StatusBar backgroundColor="#c7ceea" barStyle="light-content"/>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-      >
-        {/* <UserPage /> */}
-        {/* <DiscoverPage /> */}
-        {/* <DiscoverByTopicPage /> */}
-        <LoginPage />
-        {/* <Navigation /> */}
-      </ScrollView>      
-    </SafeAreaView>
-    // <NavigationContainer>
-    //   <Stack.Navigator>
- 
-    //     <Stack.Screen name="Home" component={DiscoverPage} />
- 
-    //     <Stack.Screen name="Second" component={DiscoverByTopicPage} />
- 
-    //   </Stack.Navigator>
-    // </NavigationContainer>
+    // <SafeAreaView style={[styles.container, GlobalStyles.AndroidSafeArea]}>
+    //   <StatusBar backgroundColor="#c7ceea" barStyle="light-content"/>
+    //   <ScrollView
+    //     showsVerticalScrollIndicator={false}
+    //     showsHorizontalScrollIndicator={false}
+    //   >
+    //     {/* <UserPage /> */}
+    //     {/* <DiscoverPage /> */}
+    //     {/* <DiscoverByTopicPage /> */}
+    //     <LoginPage />
+    //     {/* <GetNewPasswordPage /> */}
+    //     {/* <Register /> */}
+    //     {/* <DetailPostPage /> */}
+    //     {/* <ReviewPage /> */}
+    //     {/* <Navigation /> */}
+    //   </ScrollView>      
+    // </SafeAreaView>
+    
+    <NavigationContainer>
+      <ScrollView contentContainerStyle={{height: "200%"}}>
+        <Stack.Navigator
+          screenOptions={{
+            // headerShown: false,
+            showsHorizontalScrollIndicator: false,
+            showsVerticalScrollIndicator: false
+          }}
+        >
+            {/* <Stack.Screen name='Login' component={LoginPage} /> */}
+            {/* <Stack.Screen name='Discover' component={DiscoverPage} />
+            <Stack.Screen name='DiscoverByTopic' component={DiscoverByTopicPage} />
+            <Stack.Screen name='Register' component={RegisterPage} />
+            <Stack.Screen name='DetailPost' component={DetailPostPage} />
+            <Stack.Screen name='Review' component={ReviewPage} /> */}
+            <Stack.Screen name="User" component={UserPage} />
+        </Stack.Navigator>
+      </ScrollView>
+      </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
