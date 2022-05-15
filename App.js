@@ -43,12 +43,12 @@ export default function App() {
             showsVerticalScrollIndicator: false
           }}
         >
-            {/* <Stack.Screen name='Login' component={LoginPage} /> */}
-            {/* <Stack.Screen name='Discover' component={DiscoverPage} />
+            <Stack.Screen name='Login' component={LoginPage} />
+            <Stack.Screen name='Discover' component={DiscoverPage} />
             <Stack.Screen name='DiscoverByTopic' component={DiscoverByTopicPage} />
             <Stack.Screen name='Register' component={RegisterPage} />
             <Stack.Screen name='DetailPost' component={DetailPostPage} />
-            <Stack.Screen name='Review' component={ReviewPage} /> */}
+            <Stack.Screen name='Review' component={ReviewPage} />
             <Stack.Screen name="User" component={UserPage} />
         </Stack.Navigator>
       </ScrollView>
